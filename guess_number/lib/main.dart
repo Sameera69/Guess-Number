@@ -35,16 +35,17 @@ class _DigitRecognizerState extends State<DigitRecognizer> {
 
   // Track drawing points on the whiteboard
   void _onPanUpdate(DragUpdateDetails details) {
-    RenderBox? box = context.findRenderObject() as RenderBox?;
-    if (box != null) {
-      setState(() {
-        _points.add(box.globalToLocal(details.globalPosition));
-      });
-    }
+    RenderBox box = context.findRenderObject() as RenderBox;
+    Offset point = box.globalToLocal(details.globalPosition);
+    setState(() {
+      _points.add(point);
+    });
   }
 
   void _onPanEnd(DragEndDetails details) {
-    _points.add(Offset.infinite); // break point for lines
+    setState(() {
+      _points.add(Offset.infinite); // sentinel to break lines
+    });
   }
 
   // Clear the drawing
