@@ -2,6 +2,8 @@ import 'dart:ui' as ui;
 import 'dart:typed_data';
 import 'dart:js' as js;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(const MyApp());
@@ -162,7 +164,6 @@ class _DigitRecognizerState extends State<DigitRecognizer> {
                 onPanEnd: _onPanEnd,
                 child: CustomPaint(
                   painter: _DrawingPainter(_points),
-                  child: Container(),
                 ),
               ),
             ),
@@ -174,7 +175,7 @@ class _DigitRecognizerState extends State<DigitRecognizer> {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.redAccent),
                   onPressed: _clear,
-                  child: const Text('Clear'),
+                  child: const Text('Clear', style: TextStyle(color: Colors.white)),
                 ),
               ),
               Expanded(
@@ -182,7 +183,7 @@ class _DigitRecognizerState extends State<DigitRecognizer> {
                   style:
                       ElevatedButton.styleFrom(backgroundColor: Colors.orange),
                   onPressed: _onGuess,
-                  child: const Text('Guess'),
+                  child: const Text('Guess', style: TextStyle(color: Colors.white)),
                 ),
               ),
             ],
