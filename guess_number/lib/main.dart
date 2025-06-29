@@ -159,11 +159,24 @@ class _DigitRecognizerState extends State<DigitRecognizer> {
           Expanded(
             child: Container(
               color: Colors.white,
-              child: GestureDetector(
-                onPanUpdate: _onPanUpdate,
-                onPanEnd: _onPanEnd,
-                child: CustomPaint(
-                  painter: _DrawingPainter(_points),
+              child:SizedBox(
+                width: 280,
+                height: 280,
+                child: GestureDetector(
+                  onPanUpdate: (details) {
+                    setState(() {
+                      final box = context.findRenderObject() as RenderBox;
+                      final localPosition = box.globalToLocal(details.globalPosition);
+                      _points.add(localPosition);
+                    });
+                  },
+                  onPanEnd: (_) => setState(() => _points.add(Offset.infinite)),
+                  child: CustomPaint(
+                    painter: _DrawingPainter(_points),
+                    child: Container(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -207,13 +220,15 @@ class _DrawingPainter extends CustomPainter {
       ..strokeWidth = 20.0;
 
     for (int i = 0; i < points.length - 1; i++) {
-      if (points[i] != Offset.infinite && points[i + 1] != Offset.infinite) {
-        canvas.drawLine(points[i], points[i + 1], paint);
+      final p1 = points[i];
+      final p2 = points[i + 1];
+      if (p1 != Offset.infinite && p2 != Offset.infinite) {
+        canvas.drawLine(p1, p2, paint);
       }
     }
   }
 
   @override
-  bool shouldRepaint(_DrawingPainter oldDelegate) =>
-      oldDelegate.points != points;
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
+
